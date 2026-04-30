@@ -5,10 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PageResource\Pages;
 use App\Models\Page;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Resources\Form;
+use Filament\Resources\Table;
 use Filament\Tables;
-use Filament\Tables\Table;
 
 class PageResource extends Resource
 {
@@ -57,4 +57,3 @@ class PageResource extends Resource
         ];
     }
 }
-
