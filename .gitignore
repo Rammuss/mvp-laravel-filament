@@ -4,6 +4,8 @@
 /public/storage
 /storage/*.key
 /vendor
+.env.production.example
+PLAN_MVP.md
 .env
 .env.backup
 .env.production
