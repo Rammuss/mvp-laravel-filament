@@ -1,5 +1,10 @@
-FROM composer:2 AS vendor
+FROM php:8.2-cli AS vendor
 WORKDIR /app
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
 
@@ -24,4 +29,3 @@ RUN cp .env.example .env \
 RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
 
 EXPOSE 80
-
