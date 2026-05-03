@@ -33,7 +33,7 @@
             <h1 class="font-headline-xl text-white mb-4">Tu próximo hogar comienza aquí</h1>
             <p class="font-body-lg text-white/90 mb-10 max-w-xl">Expertos en encontrar el espacio perfecto para ti. Brindamos asesoría personalizada y acceso a las propiedades más exclusivas del mercado.</p>
             <div class="flex flex-wrap gap-4">
-                <a href="#destacadas" class="bg-secondary-container text-on-secondary-container px-8 py-4 rounded-xl font-headline-md hover:brightness-110 transition-all">Ver propiedades</a>
+                <a href="{{ route('properties.index') }}" class="bg-secondary-container text-on-secondary-container px-8 py-4 rounded-xl font-headline-md hover:brightness-110 transition-all">Ver propiedades</a>
                 <a href="#contacto" class="bg-white/10 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-xl font-headline-md hover:bg-white/20 transition-all">Contactar asesor</a>
             </div>
         </div>
@@ -74,7 +74,7 @@
                 <span class="text-secondary font-label-md uppercase tracking-widest">Descubre lo mejor</span>
                 <h2 class="font-headline-lg mt-2">Propiedades Destacadas</h2>
             </div>
-            <a class="text-primary font-label-md flex items-center gap-2 hover:underline" href="#">Ver todas las propiedades <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span></a>
+            <a class="text-primary font-label-md flex items-center gap-2 hover:underline" href="{{ route('properties.index') }}">Ver todas las propiedades <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span></a>
         </div>
 
         @if($featuredProperties->isEmpty())
