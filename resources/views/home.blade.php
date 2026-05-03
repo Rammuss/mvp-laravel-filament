@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8">
@@ -148,16 +148,16 @@
                         @if($cover)
                             <img
                                 class="property-image"
-                                src="{{ asset('storage/' . $cover->image_path) }}"
+                                src="{{ Storage::url($cover->image_path) }}"
                                 alt="{{ $cover->alt_text ?: $property->title }}"
                             >
                         @endif
                         <div class="property-content">
                             <h3>{{ $property->title }}</h3>
                             <p class="property-meta">
-                                {{ strtoupper($property->operation_type) }} · {{ ucfirst($property->property_type) }}
+                                {{ strtoupper($property->operation_type) }} - {{ ucfirst($property->property_type) }}
                                 @if($property->city)
-                                    · {{ $property->city }}
+                                    - {{ $property->city }}
                                 @endif
                             </p>
                             <p class="property-price">{{ $property->currency }} {{ number_format((float) $property->price, 0, ',', '.') }}</p>

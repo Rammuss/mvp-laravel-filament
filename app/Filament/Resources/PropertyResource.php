@@ -72,6 +72,7 @@ class PropertyResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('image_path')
                             ->image()
+                            ->disk('public')
                             ->directory('properties')
                             ->required(),
                         Forms\Components\TextInput::make('alt_text')
