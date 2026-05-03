@@ -8,6 +8,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY . .
 RUN composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
 
+FROM node:20-alpine AS frontend
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY resources ./resources
+COPY vite.config.js postcss.config.js tailwind.config.js ./
+RUN npm run build
+
 FROM php:8.2-apache
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -21,6 +29,7 @@ WORKDIR /var/www/html
 
 COPY . .
 COPY --from=vendor /app/vendor ./vendor
+COPY --from=frontend /app/public/build ./public/build
 
 RUN cp .env.example .env \
     && mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
