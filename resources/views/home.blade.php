@@ -8,243 +8,351 @@
         :root {
             --bg: #f8f9fa;
             --surface: #ffffff;
-            --surface-soft: #eef1f4;
-            --text: #0f172a;
-            --muted: #475569;
+            --surface-2: #eef1f4;
+            --text: #191c1d;
+            --muted: #44474d;
             --brand: #0a1d37;
-            --accent: #c58b2d;
-            --line: #dbe2ea;
+            --gold: #c79a4a;
+            --line: #dbe1e7;
+            --ok: #25d366;
         }
 
         * { box-sizing: border-box; }
 
         body {
             margin: 0;
-            font-family: Inter, "Segoe UI", Tahoma, sans-serif;
-            color: var(--text);
+            font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background: var(--bg);
+            color: var(--text);
         }
 
         .container {
-            width: min(1200px, 92%);
-            margin-inline: auto;
+            width: min(1240px, 92%);
+            margin: 0 auto;
         }
 
-        .nav {
+        .topbar {
             position: sticky;
             top: 0;
-            z-index: 50;
+            z-index: 30;
+            background: rgba(255,255,255,.92);
             backdrop-filter: blur(8px);
-            background: color-mix(in oklab, white 85%, transparent);
             border-bottom: 1px solid var(--line);
         }
 
-        .nav-inner {
+        .topbar-inner {
+            min-height: 68px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            min-height: 68px;
             gap: 16px;
         }
 
         .brand {
-            font-weight: 800;
-            font-size: 22px;
             color: var(--brand);
+            font-weight: 800;
+            font-size: 24px;
             text-decoration: none;
+            letter-spacing: .5px;
+            text-transform: uppercase;
         }
 
-        .nav-links {
+        .top-links {
             display: flex;
-            gap: 16px;
+            gap: 22px;
             flex-wrap: wrap;
         }
 
-        .nav-links a {
+        .top-links a {
             text-decoration: none;
             color: var(--muted);
             font-weight: 600;
             font-size: 14px;
         }
 
+        .top-cta {
+            text-decoration: none;
+            background: var(--brand);
+            color: #fff;
+            border-radius: 10px;
+            padding: 10px 16px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
         .hero {
-            padding: 72px 0 44px;
-        }
-
-        .hero-grid {
+            min-height: 620px;
+            position: relative;
             display: grid;
-            grid-template-columns: 1.2fr .8fr;
-            gap: 24px;
-            align-items: stretch;
+            align-items: center;
+            overflow: hidden;
+            background: radial-gradient(1200px 400px at 80% 90%, rgba(199,154,74,.22), transparent 55%), linear-gradient(120deg, #071528 0%, #102846 56%, #1f3f66 100%);
         }
 
-        .hero-card {
-            background: linear-gradient(135deg, #0a1d37 0%, #10294d 60%, #17335b 100%);
-            color: white;
-            border-radius: 18px;
-            padding: 34px;
-            border: 1px solid #1c3f70;
-            box-shadow: 0 18px 40px rgba(10, 29, 55, .18);
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(7, 21, 40, .76) 0%, rgba(7, 21, 40, .28) 55%, rgba(7, 21, 40, .14) 100%);
         }
 
-        .hero-card h1 {
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            color: #fff;
+            max-width: 760px;
+            padding: 42px 0;
+        }
+
+        .hero h1 {
             margin: 0;
-            font-size: clamp(32px, 4vw, 52px);
+            font-size: clamp(34px, 5.5vw, 56px);
             line-height: 1.05;
             letter-spacing: -.02em;
         }
 
-        .hero-card p {
-            margin: 14px 0 0;
-            color: #dbe7f9;
-            max-width: 58ch;
-            line-height: 1.6;
-        }
-
-        .cta-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 24px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            border-radius: 10px;
-            padding: 12px 18px;
-            font-weight: 700;
-            border: 1px solid transparent;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: #1d1300;
-        }
-
-        .btn-ghost {
-            background: transparent;
-            color: #e2e8f0;
-            border-color: #395780;
-        }
-
-        .hero-side {
-            background: var(--surface);
-            border: 1px solid var(--line);
-            border-radius: 18px;
-            padding: 20px;
-        }
-
-        .hero-side h3 {
-            margin: 0 0 8px;
+        .hero p {
+            margin: 18px 0 0;
+            color: #d7e4f6;
             font-size: 18px;
-            color: var(--brand);
-        }
-
-        .hero-side p {
-            margin: 0;
-            color: var(--muted);
-            line-height: 1.6;
+            line-height: 1.65;
+            max-width: 64ch;
             white-space: pre-line;
         }
 
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 28px;
+        }
+
+        .btn {
+            text-decoration: none;
+            border-radius: 12px;
+            padding: 13px 20px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: #241400;
+        }
+
+        .btn-dark {
+            border: 1px solid rgba(255,255,255,.35);
+            background: rgba(255,255,255,.1);
+            color: #fff;
+        }
+
         .section {
-            padding: 14px 0 30px;
+            padding: 78px 0;
         }
 
-        .section h2 {
-            font-size: 34px;
-            margin: 0 0 18px;
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .section-header .eyebrow {
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: .16em;
+            color: var(--gold);
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .section-header h2 {
+            margin: 0;
             color: var(--brand);
+            font-size: clamp(28px, 4vw, 42px);
+            line-height: 1.15;
         }
 
-        .property-grid {
+        .section-header a {
+            color: var(--brand);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .cards {
             display: grid;
-            gap: 16px;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
         }
 
-        .property-card {
+        .card {
             background: var(--surface);
             border: 1px solid var(--line);
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 8px 24px rgba(10, 29, 55, .05);
+            box-shadow: 0 10px 24px rgba(10, 29, 55, .06);
         }
 
-        .property-image {
-            width: 100%;
+        .card-image {
             height: 210px;
+            background: var(--surface-2);
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             display: block;
-            background: var(--surface-soft);
         }
 
-        .property-content {
+        .card-body {
             padding: 16px;
         }
 
-        .property-content h3 {
-            margin: 0 0 8px;
+        .card-body h3 {
+            margin: 0;
             font-size: 34px;
+            font-size: 32px;
+            font-size: 30px;
+            font-size: 28px;
+            font-size: 26px;
             font-size: 24px;
-            line-height: 1.15;
+            line-height: 1.2;
+            color: var(--brand);
         }
 
-        .property-meta {
-            margin: 0;
+        .meta {
+            margin-top: 8px;
             color: var(--muted);
             font-size: 14px;
         }
 
-        .property-price {
+        .price {
             margin-top: 10px;
-            font-size: 30px;
-            font-size: 18px;
+            color: #d97706;
             font-weight: 800;
-            color: var(--accent);
+            font-size: 30px;
+            font-size: 22px;
         }
 
-        .simple-blocks {
+        .grid-2 {
             display: grid;
-            gap: 14px;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
         }
 
-        .simple-block {
+        .panel {
             background: var(--surface);
             border: 1px solid var(--line);
             border-radius: 14px;
             padding: 18px;
         }
 
-        .simple-block h3 {
+        .panel h3 {
             margin: 0 0 8px;
             color: var(--brand);
-            font-size: 24px;
-            font-size: 21px;
+            font-size: 22px;
         }
 
-        .simple-block p {
+        .panel p {
             margin: 0;
             color: var(--muted);
-            line-height: 1.6;
+            line-height: 1.62;
             white-space: pre-line;
         }
 
-        .footer {
+        .services {
+            background: #f1f4f7;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .service-card {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .service-card h4 {
+            margin: 0 0 8px;
+            color: var(--brand);
+            font-size: 22px;
+            font-size: 20px;
+        }
+
+        .service-card p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.58;
+            font-size: 14px;
+            white-space: pre-line;
+        }
+
+        .cta-final {
+            background: linear-gradient(160deg, #ffffff 0%, #f6f8fb 55%, #eef3f9 100%);
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 34px;
+            text-align: center;
+        }
+
+        .cta-final h2 {
+            margin: 0;
+            color: var(--brand);
+            font-size: clamp(28px, 4vw, 46px);
+            line-height: 1.15;
+        }
+
+        .cta-final p {
+            margin: 12px auto 0;
+            max-width: 64ch;
+            color: var(--muted);
+            line-height: 1.62;
+            white-space: pre-line;
+        }
+
+        .cta-buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-wa {
+            background: var(--ok);
+            color: #fff;
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 28px 0 42px;
             border-top: 1px solid var(--line);
-            margin-top: 36px;
-            padding: 24px 0 40px;
             color: var(--muted);
             font-size: 14px;
         }
 
-        @media (max-width: 900px) {
-            .hero-grid {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 1040px) {
+            .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 760px) {
+            .top-links { display: none; }
+            .cards { grid-template-columns: 1fr; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .service-grid { grid-template-columns: 1fr; }
+            .hero { min-height: 540px; }
         }
     </style>
 </head>
@@ -252,64 +360,64 @@
 @php
     $hero = $sections->firstWhere('section_key', 'hero');
     $about = $sections->firstWhere('section_key', 'about');
+    $services = $sections->firstWhere('section_key', 'service');
     $contact = $sections->firstWhere('section_key', 'contact');
-    $otherSections = $sections->filter(fn ($section) => ! in_array($section->section_key, ['hero', 'about', 'contact'], true));
 @endphp
 
-<nav class="nav">
-    <div class="container nav-inner">
-        <a href="/" class="brand">{{ $page?->title ?? 'Inmo' }}</a>
-        <div class="nav-links">
-            <a href="#destacadas">Destacadas</a>
-            @if($about)<a href="#about">Nosotros</a>@endif
-            @if($contact)<a href="#contact">Contacto</a>@endif
-        </div>
-    </div>
-</nav>
-
-<header class="hero">
-    <div class="container hero-grid">
-        <section class="hero-card" id="hero">
-            <h1>{{ $hero?->title ?? 'Propiedades premium para vivir e invertir' }}</h1>
-            <p>{{ $hero?->body ?? 'Explora una seleccion de propiedades destacadas con ubicaciones estrategicas y acompanamiento profesional en cada paso.' }}</p>
-            <div class="cta-row">
-                <a class="btn btn-primary" href="#destacadas">Ver destacadas</a>
-                <a class="btn btn-ghost" href="/admin">Panel admin</a>
-            </div>
-        </section>
-
-        <aside class="hero-side">
-            <h3>{{ $hero?->subtitle ?? 'Asesoria inmobiliaria confiable' }}</h3>
-            <p>
-                {{ $about?->body ?? 'Gestiona propiedades, destacadas y contenido desde un solo panel autogestionable.' }}
-            </p>
-        </aside>
+<header class="topbar">
+    <div class="container topbar-inner">
+        <a class="brand" href="/">{{ $page?->title ?? 'LuxuryEstate' }}</a>
+        <nav class="top-links">
+            <a href="#destacadas">Propiedades</a>
+            <a href="#servicios">Servicios</a>
+            <a href="#about">Nosotros</a>
+        </nav>
+        <a class="top-cta" href="#contact">Contactar</a>
     </div>
 </header>
 
+<section class="hero" id="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1>{{ $hero?->title ?? 'Tu proximo hogar comienza aqui' }}</h1>
+            <p>{{ $hero?->body ?? 'Expertos en encontrar el espacio perfecto para ti con asesoria personalizada y propiedades destacadas.' }}</p>
+            <div class="hero-buttons">
+                <a class="btn btn-gold" href="#destacadas">Ver propiedades</a>
+                <a class="btn btn-dark" href="#contact">Contactar asesor</a>
+            </div>
+        </div>
+    </div>
+</section>
+
 <main class="container">
     <section class="section" id="destacadas">
-        <h2>Propiedades destacadas</h2>
+        <div class="section-header">
+            <div>
+                <span class="eyebrow">Descubre lo mejor</span>
+                <h2>Propiedades destacadas</h2>
+            </div>
+            <a href="#">Ver todas</a>
+        </div>
+
         @if($featuredProperties->isEmpty())
-            <div class="simple-block">
-                <h3>Sin destacadas por ahora</h3>
-                <p>Marca propiedades como destacadas en el panel para mostrarlas aqui.</p>
+            <div class="panel">
+                <h3>Sin propiedades destacadas</h3>
+                <p>Marca propiedades como destacadas en el panel para verlas aqui.</p>
             </div>
         @else
-            <div class="property-grid">
+            <div class="cards">
                 @foreach($featuredProperties as $property)
                     @php $cover = $property->images->first(); @endphp
-                    <article class="property-card">
-                        @if($cover)
-                            <img class="property-image" src="{{ Storage::url($cover->image_path) }}" alt="{{ $cover->alt_text ?: $property->title }}">
-                        @endif
-                        <div class="property-content">
+                    <article class="card">
+                        <div class="card-image">
+                            @if($cover)
+                                <img src="{{ Storage::url($cover->image_path) }}" alt="{{ $cover->alt_text ?: $property->title }}">
+                            @endif
+                        </div>
+                        <div class="card-body">
                             <h3>{{ $property->title }}</h3>
-                            <p class="property-meta">
-                                {{ strtoupper($property->operation_type) }} - {{ ucfirst($property->property_type) }}
-                                @if($property->city) - {{ $property->city }} @endif
-                            </p>
-                            <p class="property-price">{{ $property->currency }} {{ number_format((float) $property->price, 0, ',', '.') }}</p>
+                            <p class="meta">{{ strtoupper($property->operation_type) }} - {{ ucfirst($property->property_type) }} @if($property->city) - {{ $property->city }} @endif</p>
+                            <p class="price">{{ $property->currency }} {{ number_format((float) $property->price, 0, ',', '.') }}</p>
                         </div>
                     </article>
                 @endforeach
@@ -317,53 +425,61 @@
         @endif
     </section>
 
-    @if($otherSections->isNotEmpty())
-        <section class="section">
-            <h2>Mas informacion</h2>
-            <div class="simple-blocks">
-                @foreach($otherSections as $section)
-                    <article class="simple-block" id="{{ $section->section_key }}">
-                        <h3>{{ $section->title ?: ucfirst($section->section_key) }}</h3>
-                        @if($section->subtitle)
-                            <p><strong>{{ $section->subtitle }}</strong></p>
-                        @endif
-                        @if($section->body)
-                            <p>{{ $section->body }}</p>
-                        @endif
-                    </article>
-                @endforeach
+    <section class="section services" id="servicios">
+        <div class="section-header">
+            <div>
+                <h2>{{ $services?->title ?? 'Nuestros servicios' }}</h2>
             </div>
-        </section>
-    @endif
+        </div>
 
-    @if($about)
-        <section class="section" id="about">
-            <h2>{{ $about->title ?: 'Sobre nosotros' }}</h2>
-            <div class="simple-block">
-                @if($about->subtitle)
-                    <h3>{{ $about->subtitle }}</h3>
-                @endif
-                <p>{{ $about->body }}</p>
-            </div>
-        </section>
-    @endif
+        <div class="service-grid">
+            <article class="service-card">
+                <h4>Compra</h4>
+                <p>{{ $services?->body ?? 'Acompanamiento integral para encontrar y comprar la propiedad correcta.' }}</p>
+            </article>
+            <article class="service-card">
+                <h4>Venta</h4>
+                <p>Posicionamos tu propiedad para vender al mejor precio y en el menor tiempo posible.</p>
+            </article>
+            <article class="service-card">
+                <h4>Alquiler</h4>
+                <p>Gestion operativa y comercial para propietarios e inquilinos con procesos claros.</p>
+            </article>
+            <article class="service-card">
+                <h4>Asesoria</h4>
+                <p>Soporte legal y comercial en cada etapa de la operacion inmobiliaria.</p>
+            </article>
+        </div>
+    </section>
 
-    @if($contact)
-        <section class="section" id="contact">
-            <h2>{{ $contact->title ?: 'Contacto' }}</h2>
-            <div class="simple-block">
-                @if($contact->subtitle)
-                    <h3>{{ $contact->subtitle }}</h3>
-                @endif
-                <p>{{ $contact->body }}</p>
+    <section class="section" id="about">
+        <div class="grid-2">
+            <article class="panel">
+                <h3>{{ $about?->title ?? 'Compromiso con la excelencia' }}</h3>
+                <p>{{ $about?->body ?? 'Trabajamos con transparencia, experiencia y foco en resultados para cada cliente.' }}</p>
+            </article>
+            <article class="panel">
+                <h3>{{ $contact?->title ?? 'Contacto directo' }}</h3>
+                <p>{{ $contact?->body ?? 'Escribinos para coordinar una visita o recibir asesoramiento personalizado.' }}</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="section" id="contact">
+        <div class="cta-final">
+            <h2>{{ $contact?->subtitle ?? 'Agenda una visita hoy' }}</h2>
+            <p>{{ $contact?->body ?? 'Nuestro equipo esta listo para ayudarte a encontrar la propiedad ideal.' }}</p>
+            <div class="cta-buttons">
+                <a class="btn btn-wa" href="#">WhatsApp</a>
+                <a class="btn btn-gold" href="#destacadas">Ver destacadas</a>
             </div>
-        </section>
-    @endif
+        </div>
+    </section>
 </main>
 
-<footer class="footer">
+<footer>
     <div class="container">
-        {{ $page?->title ?? 'Inmo' }} - Panel autogestionable activo.
+        {{ $page?->title ?? 'LuxuryEstate' }} - Diseno adaptado y contenido autogestionable.
     </div>
 </footer>
 </body>
