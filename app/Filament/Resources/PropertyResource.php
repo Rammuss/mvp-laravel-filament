@@ -9,6 +9,8 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 
 class PropertyResource extends Resource
 {
@@ -74,6 +76,10 @@ class PropertyResource extends Resource
                             ->image()
                             ->disk('public')
                             ->directory('properties')
+                            ->preserveFilenames(false)
+                            ->getUploadedFileNameForStorageUsing(
+                                fn (UploadedFile $file): string => Str::uuid() . '.' . $file->getClientOriginalExtension()
+                            )
                             ->required(),
                         Forms\Components\TextInput::make('alt_text')
                             ->maxLength(255),
