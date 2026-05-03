@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $page?->title ?? config('app.name') }}</title>
+    <link href="{{ asset('assets/stitch/css/fonts.css') }}" rel="stylesheet">
     <style>
         :root {
             --bg: #f8f9fa;
@@ -86,7 +87,10 @@
             display: grid;
             align-items: center;
             overflow: hidden;
-            background: radial-gradient(1200px 400px at 80% 90%, rgba(199,154,74,.22), transparent 55%), linear-gradient(120deg, #071528 0%, #102846 56%, #1f3f66 100%);
+            background:
+                radial-gradient(1200px 400px at 80% 90%, rgba(199,154,74,.22), transparent 55%),
+                linear-gradient(120deg, #071528 0%, #102846 56%, #1f3f66 100%),
+                url('{{ asset('assets/stitch/images/img01.jpg') }}') center/cover no-repeat;
         }
 
         .hero::after {
@@ -459,6 +463,7 @@
                 <p>{{ $about?->body ?? 'Trabajamos con transparencia, experiencia y foco en resultados para cada cliente.' }}</p>
             </article>
             <article class="panel">
+                <img src="{{ asset('assets/stitch/images/img08.jpg') }}" alt="" style="width:100%;height:220px;object-fit:cover;border-radius:10px;margin-bottom:12px;">
                 <h3>{{ $contact?->title ?? 'Contacto directo' }}</h3>
                 <p>{{ $contact?->body ?? 'Escribinos para coordinar una visita o recibir asesoramiento personalizado.' }}</p>
             </article>
