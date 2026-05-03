@@ -62,6 +62,47 @@
             border-radius: 12px;
             padding: 16px;
         }
+        .section-title {
+            margin: 28px 0 14px;
+            font-size: 30px;
+        }
+        .property-grid {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+        .property-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .property-image {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+            display: block;
+            background: #e5e7eb;
+        }
+        .property-content {
+            padding: 14px;
+        }
+        .property-content h3 {
+            margin: 0 0 6px 0;
+            font-size: 20px;
+            color: var(--text);
+        }
+        .property-meta {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+        .property-price {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--brand);
+        }
     </style>
 </head>
 <body>
@@ -86,10 +127,45 @@
             </section>
         @empty
             <div class="empty">
-                No hay secciones visibles para la p√°gina <strong>home</strong>.
-                C√°rgalas desde el panel en <strong>Sections</strong>.
+                No hay secciones visibles para la pagina <strong>home</strong>.
+                Cargalas desde el panel en <strong>Sections</strong>.
             </div>
         @endforelse
+
+        <h2 class="section-title">Propiedades destacadas</h2>
+        @if($featuredProperties->isEmpty())
+            <div class="empty">
+                No hay propiedades destacadas publicadas.
+                Marca <strong>is_featured</strong> en Properties para mostrarlas aqui.
+            </div>
+        @else
+            <section class="property-grid">
+                @foreach($featuredProperties as $property)
+                    @php
+                        $cover = $property->images->first();
+                    @endphp
+                    <article class="property-card">
+                        @if($cover)
+                            <img
+                                class="property-image"
+                                src="{{ asset('storage/' . $cover->image_path) }}"
+                                alt="{{ $cover->alt_text ?: $property->title }}"
+                            >
+                        @endif
+                        <div class="property-content">
+                            <h3>{{ $property->title }}</h3>
+                            <p class="property-meta">
+                                {{ strtoupper($property->operation_type) }} ∑ {{ ucfirst($property->property_type) }}
+                                @if($property->city)
+                                    ∑ {{ $property->city }}
+                                @endif
+                            </p>
+                            <p class="property-price">{{ $property->currency }} {{ number_format((float) $property->price, 0, ',', '.') }}</p>
+                        </div>
+                    </article>
+                @endforeach
+            </section>
+        @endif
     </main>
 </body>
 </html>
