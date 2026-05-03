@@ -74,7 +74,6 @@ class PropertyResource extends Resource
                             ->image()
                             ->disk('public')
                             ->directory('properties')
-                            ->fetchFileInformation(false)
                             ->required(),
                         Forms\Components\TextInput::make('alt_text')
                             ->maxLength(255),
