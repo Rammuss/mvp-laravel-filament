@@ -80,12 +80,19 @@
 
                 @php
                     $waText = rawurlencode("Hola, me interesa la propiedad: {$property->title} ({$property->city}).");
-                    $waLink = "https://wa.me/?text={$waText}";
+                    $digitsOnly = preg_replace('/\D+/', '', (string) $property->whatsapp_number);
+                    $waLink = $digitsOnly ? "https://wa.me/{$digitsOnly}?text={$waText}" : null;
                 @endphp
 
-                <a href="{{ $waLink }}" target="_blank" rel="noopener" class="mt-5 w-full inline-flex items-center justify-center bg-[#25D366] text-white px-5 py-3 rounded-lg font-label-md hover:brightness-95 transition-all">
-                    Consultar por WhatsApp
-                </a>
+                @if($waLink)
+                    <a href="{{ $waLink }}" target="_blank" rel="noopener" class="mt-5 w-full inline-flex items-center justify-center bg-[#25D366] text-white px-5 py-3 rounded-lg font-label-md hover:brightness-95 transition-all">
+                        Consultar por WhatsApp
+                    </a>
+                @else
+                    <button type="button" disabled class="mt-5 w-full inline-flex items-center justify-center bg-slate-300 text-slate-600 px-5 py-3 rounded-lg font-label-md cursor-not-allowed">
+                        WhatsApp no configurado
+                    </button>
+                @endif
             </div>
 
             <div class="bg-white rounded-xl border border-slate-200 p-6">
@@ -153,4 +160,3 @@
 </main>
 </body>
 </html>
-

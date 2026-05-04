@@ -60,6 +60,11 @@ class PropertyResource extends Resource
                 Forms\Components\TextInput::make('area_m2')->numeric(),
                 Forms\Components\TextInput::make('city')->maxLength(255),
                 Forms\Components\TextInput::make('address')->maxLength(255),
+                Forms\Components\TextInput::make('whatsapp_number')
+                    ->label('WhatsApp number')
+                    ->helperText('Ej: 595981123456 (solo numeros con codigo de pais)')
+                    ->tel()
+                    ->maxLength(30),
                 Forms\Components\Textarea::make('short_description')
                     ->rows(2)
                     ->columnSpanFull(),
@@ -103,6 +108,7 @@ class PropertyResource extends Resource
                 Tables\Columns\TextColumn::make('property_type')->sortable(),
                 Tables\Columns\TextColumn::make('price')->money(fn ($record) => $record->currency)->sortable(),
                 Tables\Columns\TextColumn::make('city')->searchable(),
+                Tables\Columns\TextColumn::make('whatsapp_number')->label('WhatsApp')->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\IconColumn::make('is_featured')->boolean(),
                 Tables\Columns\IconColumn::make('is_published')->boolean(),
                 Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable(),

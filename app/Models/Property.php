@@ -22,6 +22,7 @@ class Property extends Model
         'area_m2',
         'city',
         'address',
+        'whatsapp_number',
         'short_description',
         'long_description',
         'is_featured',
