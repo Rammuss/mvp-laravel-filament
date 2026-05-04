@@ -112,8 +112,22 @@
 
             @php
                 $mapQuery = trim(implode(', ', array_filter([$property->address, $property->city])));
-                $mapUrl = $mapQuery ? 'https://www.google.com/maps/search/?api=1&query=' . urlencode($mapQuery) : null;
-                $mapEmbed = $mapQuery ? 'https://www.google.com/maps?q=' . urlencode($mapQuery) . '&output=embed' : null;
+                $googleMapsUrl = trim((string) $property->google_maps_url);
+                $mapUrl = null;
+                $mapEmbed = null;
+
+                if ($googleMapsUrl !== '') {
+                    $mapUrl = $googleMapsUrl;
+
+                    if (str_contains($googleMapsUrl, 'output=embed')) {
+                        $mapEmbed = $googleMapsUrl;
+                    } else {
+                        $mapEmbed = 'https://www.google.com/maps?q=' . urlencode($googleMapsUrl) . '&output=embed';
+                    }
+                } elseif ($mapQuery !== '') {
+                    $mapUrl = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($mapQuery);
+                    $mapEmbed = 'https://www.google.com/maps?q=' . urlencode($mapQuery) . '&output=embed';
+                }
             @endphp
 
             <section class="bg-white rounded-xl border border-slate-200 p-6 mt-6">

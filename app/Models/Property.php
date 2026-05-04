@@ -23,6 +23,7 @@ class Property extends Model
         'city',
         'address',
         'whatsapp_number',
+        'google_maps_url',
         'short_description',
         'long_description',
         'is_featured',

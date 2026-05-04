@@ -65,6 +65,11 @@ class PropertyResource extends Resource
                     ->helperText('Ej: 595981123456 (solo numeros con codigo de pais)')
                     ->tel()
                     ->maxLength(30),
+                Forms\Components\TextInput::make('google_maps_url')
+                    ->label('Google Maps URL')
+                    ->url()
+                    ->maxLength(2048)
+                    ->helperText('Pega el link de Google Maps para esta propiedad'),
                 Forms\Components\Textarea::make('short_description')
                     ->rows(2)
                     ->columnSpanFull(),
@@ -109,6 +114,7 @@ class PropertyResource extends Resource
                 Tables\Columns\TextColumn::make('price')->money(fn ($record) => $record->currency)->sortable(),
                 Tables\Columns\TextColumn::make('city')->searchable(),
                 Tables\Columns\TextColumn::make('whatsapp_number')->label('WhatsApp')->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('google_maps_url')->label('Maps URL')->limit(40)->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\IconColumn::make('is_featured')->boolean(),
                 Tables\Columns\IconColumn::make('is_published')->boolean(),
                 Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable(),
