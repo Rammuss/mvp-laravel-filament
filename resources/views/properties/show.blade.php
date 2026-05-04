@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
@@ -9,9 +9,24 @@
 </head>
 <body class="bg-background text-on-background font-body-md">
 <main class="py-12 px-6 max-w-container-max mx-auto">
+    <div class="mb-6 flex flex-wrap items-center gap-2 text-sm text-slate-500">
+        <a href="{{ url('/') }}" class="hover:underline">Inicio</a>
+        <span>/</span>
+        <a href="{{ route('properties.index') }}" class="hover:underline">Propiedades</a>
+        <span>/</span>
+        <span class="text-slate-700">{{ $property->title }}</span>
+    </div>
+
     <div class="mb-8 flex items-center justify-between gap-4">
-        <a href="{{ route('properties.index') }}" class="text-primary font-label-md hover:underline">← Volver a propiedades</a>
-        <a href="{{ url('/') }}" class="text-slate-500 font-label-md hover:underline">Inicio</a>
+        <a href="{{ route('properties.index') }}" class="text-primary font-label-md hover:underline">Volver a propiedades</a>
+        <button
+            type="button"
+            id="copy-link-btn"
+            class="inline-flex items-center gap-2 bg-slate-100 text-slate-700 px-4 py-2 rounded-lg text-sm hover:bg-slate-200 transition-all"
+            data-url="{{ route('properties.show', $property->slug) }}"
+        >
+            Copiar link
+        </button>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -46,21 +61,44 @@
             @endif
 
             <article class="bg-white rounded-xl border border-slate-200 p-6 mt-6">
-                <p class="text-secondary font-label-md">{{ $property->city ?: 'Ubicación a confirmar' }}</p>
+                <p class="text-secondary font-label-md">{{ $property->city ?: 'Ubicacion a confirmar' }}</p>
                 <h1 class="font-headline-lg mt-2">{{ $property->title }}</h1>
 
-                <div class="flex flex-wrap gap-4 mt-4 text-on-surface-variant font-label-md">
-                    <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-sm">sell</span>{{ strtoupper($property->operation_type) }}</span>
-                    <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-sm">home</span>{{ ucfirst($property->property_type) }}</span>
-                    @if($property->bedrooms)
-                        <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-sm">bed</span>{{ $property->bedrooms }}</span>
-                    @endif
-                    @if($property->bathrooms)
-                        <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-sm">bathtub</span>{{ $property->bathrooms }}</span>
-                    @endif
-                    @if($property->area_m2)
-                        <span class="inline-flex items-center gap-1"><span class="material-symbols-outlined text-sm">square_foot</span>{{ number_format((float) $property->area_m2, 0, ',', '.') }} m²</span>
-                    @endif
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6 border-t border-slate-200 pt-5">
+                    <div>
+                        <p class="text-xs text-slate-500 uppercase tracking-wide">Operacion</p>
+                        <p class="font-medium text-slate-800">{{ strtoupper($property->operation_type) }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 uppercase tracking-wide">Tipo</p>
+                        <p class="font-medium text-slate-800">{{ ucfirst($property->property_type) }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 uppercase tracking-wide">Ciudad</p>
+                        <p class="font-medium text-slate-800">{{ $property->city ?: '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 uppercase tracking-wide">Dormitorios</p>
+                        <p class="font-medium text-slate-800">{{ $property->bedrooms ?: '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 uppercase tracking-wide">Banos</p>
+                        <p class="font-medium text-slate-800">{{ $property->bathrooms ?: '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 uppercase tracking-wide">Area</p>
+                        <p class="font-medium text-slate-800">
+                            @if($property->area_m2)
+                                {{ number_format((float) $property->area_m2, 0, ',', '.') }} m²
+                            @else
+                                -
+                            @endif
+                        </p>
+                    </div>
+                    <div class="col-span-2 md:col-span-3">
+                        <p class="text-xs text-slate-500 uppercase tracking-wide">Direccion</p>
+                        <p class="font-medium text-slate-800">{{ $property->address ?: '-' }}</p>
+                    </div>
                 </div>
 
                 @if($property->short_description)
@@ -71,6 +109,38 @@
                     <div class="mt-4 text-on-surface-variant whitespace-pre-line">{{ $property->long_description }}</div>
                 @endif
             </article>
+
+            @php
+                $mapQuery = trim(implode(', ', array_filter([$property->address, $property->city])));
+                $mapUrl = $mapQuery ? 'https://www.google.com/maps/search/?api=1&query=' . urlencode($mapQuery) : null;
+                $mapEmbed = $mapQuery ? 'https://www.google.com/maps?q=' . urlencode($mapQuery) . '&output=embed' : null;
+            @endphp
+
+            <section class="bg-white rounded-xl border border-slate-200 p-6 mt-6">
+                <div class="flex items-center justify-between gap-3 mb-4">
+                    <h2 class="font-headline-md">Ubicacion</h2>
+                    @if($mapUrl)
+                        <a href="{{ $mapUrl }}" target="_blank" rel="noopener" class="text-secondary font-label-md hover:underline">Ver en Google Maps</a>
+                    @endif
+                </div>
+
+                @if($mapEmbed)
+                    <div class="rounded-lg overflow-hidden border border-slate-200">
+                        <iframe
+                            title="Mapa de ubicacion"
+                            src="{{ $mapEmbed }}"
+                            width="100%"
+                            height="320"
+                            style="border:0;"
+                            allowfullscreen
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                        ></iframe>
+                    </div>
+                @else
+                    <p class="text-slate-500">No hay ubicacion configurada para esta propiedad.</p>
+                @endif
+            </section>
         </section>
 
         <aside class="space-y-6">
@@ -112,7 +182,7 @@
                         @error('name') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div>
-                        <label for="phone" class="block font-label-md text-on-surface-variant mb-2">Teléfono</label>
+                        <label for="phone" class="block font-label-md text-on-surface-variant mb-2">Telefono</label>
                         <input id="phone" name="phone" type="text" value="{{ old('phone') }}" class="w-full p-3 bg-surface-container border border-outline-variant rounded-lg font-body-md" />
                         @error('phone') <p class="text-sm text-red-600 mt-1">{{ $message }}</p> @enderror
                     </div>
@@ -158,5 +228,28 @@
         </section>
     @endif
 </main>
+<script>
+    (function () {
+        const copyBtn = document.getElementById('copy-link-btn');
+        if (!copyBtn) return;
+
+        copyBtn.addEventListener('click', async () => {
+            const url = copyBtn.getAttribute('data-url');
+            if (!url) return;
+
+            const originalLabel = copyBtn.textContent;
+
+            try {
+                await navigator.clipboard.writeText(url);
+                copyBtn.textContent = 'Link copiado';
+                setTimeout(() => {
+                    copyBtn.textContent = originalLabel;
+                }, 1800);
+            } catch (e) {
+                window.prompt('Copia este link:', url);
+            }
+        });
+    })();
+</script>
 </body>
 </html>
