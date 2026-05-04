@@ -61,7 +61,23 @@ class PropertyLeadResource extends Resource
                 Tables\Columns\TextColumn::make('name')->searchable(),
                 Tables\Columns\TextColumn::make('phone')->searchable(),
                 Tables\Columns\TextColumn::make('email')->searchable(),
-                Tables\Columns\TextColumn::make('status')->badge(),
+                Tables\Columns\TextColumn::make('status')
+                    ->formatStateUsing(function (string $state): string {
+                        return match ($state) {
+                            'new' => 'New',
+                            'contacted' => 'Contacted',
+                            'closed' => 'Closed',
+                            default => ucfirst($state),
+                        };
+                    })
+                    ->color(function (string $state): string {
+                        return match ($state) {
+                            'new' => 'warning',
+                            'contacted' => 'primary',
+                            'closed' => 'success',
+                            default => 'secondary',
+                        };
+                    }),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
             ])
             ->actions([
