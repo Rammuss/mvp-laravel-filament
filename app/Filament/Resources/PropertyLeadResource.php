@@ -62,7 +62,8 @@ class PropertyLeadResource extends Resource
                 Tables\Columns\TextColumn::make('phone')->searchable(),
                 Tables\Columns\TextColumn::make('email')->searchable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->formatStateUsing(function (string $state): string {
+                    ->formatStateUsing(function ($state): string {
+                        $state = (string) $state;
                         return match ($state) {
                             'new' => 'New',
                             'contacted' => 'Contacted',
@@ -70,7 +71,8 @@ class PropertyLeadResource extends Resource
                             default => ucfirst($state),
                         };
                     })
-                    ->color(function (string $state): string {
+                    ->color(function ($state): string {
+                        $state = (string) $state;
                         return match ($state) {
                             'new' => 'warning',
                             'contacted' => 'primary',
