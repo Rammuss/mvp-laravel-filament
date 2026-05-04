@@ -145,6 +145,12 @@
                     $mapUrl = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($mapQuery);
                     $mapEmbed = 'https://www.google.com/maps?q=' . urlencode($mapQuery) . '&output=embed';
                 }
+
+                // If the provided URL cannot be embedded (for example short shared links),
+                // fallback to address + city so the map block always renders.
+                if (!$mapEmbed && $mapQuery !== '') {
+                    $mapEmbed = 'https://www.google.com/maps?q=' . urlencode($mapQuery) . '&output=embed';
+                }
             @endphp
 
             <section class="bg-white rounded-xl border border-slate-200 p-6 mt-6">
