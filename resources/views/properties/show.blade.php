@@ -121,8 +121,25 @@
 
                     if (str_contains($googleMapsUrl, 'output=embed')) {
                         $mapEmbed = $googleMapsUrl;
+                    } elseif (preg_match('/@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/', $googleMapsUrl, $matches)) {
+                        $coordinates = $matches[1] . ',' . $matches[2];
+                        $mapEmbed = 'https://www.google.com/maps?q=' . urlencode($coordinates) . '&output=embed';
                     } else {
-                        $mapEmbed = 'https://www.google.com/maps?q=' . urlencode($googleMapsUrl) . '&output=embed';
+                        $mapEmbedQuery = null;
+                        $parsedUrl = parse_url($googleMapsUrl);
+
+                        if (!empty($parsedUrl['query'])) {
+                            parse_str($parsedUrl['query'], $params);
+                            $mapEmbedQuery = $params['q'] ?? $params['query'] ?? null;
+                        }
+
+                        if (!$mapEmbedQuery && str_contains($googleMapsUrl, '/place/')) {
+                            $mapEmbedQuery = $googleMapsUrl;
+                        }
+
+                        if ($mapEmbedQuery) {
+                            $mapEmbed = 'https://www.google.com/maps?q=' . urlencode($mapEmbedQuery) . '&output=embed';
+                        }
                     }
                 } elseif ($mapQuery !== '') {
                     $mapUrl = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($mapQuery);
