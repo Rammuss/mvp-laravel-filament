@@ -17,3 +17,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class);
 Route::get('/propiedades', [PropertyController::class, 'index'])->name('properties.index');
+Route::get('/propiedades/{slug}', [PropertyController::class, 'show'])->name('properties.show');
+Route::post('/propiedades/{slug}/consulta', [PropertyController::class, 'storeLead'])->name('properties.leads.store');

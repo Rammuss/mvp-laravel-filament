@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Property;
+use App\Models\PropertyLead;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class PropertyController extends Controller
@@ -92,5 +94,58 @@ class PropertyController extends Controller
             ],
         ]);
     }
-}
 
+    public function show(string $slug): View
+    {
+        $property = Property::query()
+            ->where('is_published', true)
+            ->where('slug', $slug)
+            ->with(['images' => function ($query) {
+                $query->orderByDesc('is_cover')->orderBy('sort_order');
+            }])
+            ->firstOrFail();
+
+        $relatedProperties = Property::query()
+            ->where('is_published', true)
+            ->whereKeyNot($property->id)
+            ->with(['images' => function ($query) {
+                $query->orderByDesc('is_cover')->orderBy('sort_order');
+            }])
+            ->latest('updated_at')
+            ->limit(3)
+            ->get();
+
+        return view('properties.show', [
+            'property' => $property,
+            'relatedProperties' => $relatedProperties,
+        ]);
+    }
+
+    public function storeLead(Request $request, string $slug): RedirectResponse
+    {
+        $property = Property::query()
+            ->where('is_published', true)
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:120'],
+            'phone' => ['nullable', 'string', 'max:50'],
+            'email' => ['nullable', 'email', 'max:120'],
+            'message' => ['required', 'string', 'max:2000'],
+        ]);
+
+        PropertyLead::query()->create([
+            'property_id' => $property->id,
+            'name' => $validated['name'],
+            'phone' => $validated['phone'] ?? null,
+            'email' => $validated['email'] ?? null,
+            'message' => $validated['message'],
+            'status' => 'new',
+        ]);
+
+        return redirect()
+            ->route('properties.show', $property->slug)
+            ->with('lead_success', 'Consulta enviada. Te contactaremos pronto.');
+    }
+}

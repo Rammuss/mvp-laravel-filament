@@ -112,7 +112,7 @@
                             </div>
                             <div class="flex justify-between items-center border-t border-surface-container pt-4">
                                 <span class="font-headline-md text-primary">{{ $property->currency }} {{ number_format((float) $property->price, 0, ',', '.') }}</span>
-                                <button class="text-secondary font-label-md hover:underline">Ver detalle</button>
+                                <a href="{{ route('properties.show', $property->slug) }}" class="text-secondary font-label-md hover:underline">Ver detalle</a>
                             </div>
                         </div>
                     </div>

@@ -122,7 +122,7 @@
                             <span class="font-headline-md text-primary">
                                 {{ $property->currency }} {{ number_format((float) $property->price, 0, ',', '.') }}
                             </span>
-                            <span class="text-secondary font-label-md">Próximamente</span>
+                            <a class="text-secondary font-label-md hover:underline" href="{{ route('properties.show', $property->slug) }}">Ver detalle</a>
                         </div>
                     </div>
                 </article>
@@ -136,4 +136,3 @@
 </main>
 </body>
 </html>
-
