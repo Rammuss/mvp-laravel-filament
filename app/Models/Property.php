@@ -37,6 +37,53 @@ class Property extends Model
         'is_published' => 'boolean',
     ];
 
+    public function setGoogleMapsUrlAttribute($value): void
+    {
+        $url = trim((string) $value);
+
+        if ($url === '') {
+            $this->attributes['google_maps_url'] = null;
+            return;
+        }
+
+        $this->attributes['google_maps_url'] = $this->expandGoogleMapsShortUrl($url) ?? $url;
+    }
+
+    private function expandGoogleMapsShortUrl(string $url): ?string
+    {
+        if (!str_contains($url, 'maps.app.goo.gl')) {
+            return null;
+        }
+
+        if (!function_exists('curl_init')) {
+            return null;
+        }
+
+        $ch = curl_init($url);
+        if (!$ch) {
+            return null;
+        }
+
+        curl_setopt_array($ch, [
+            CURLOPT_NOBODY => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 8,
+            CURLOPT_USERAGENT => 'Mozilla/5.0',
+        ]);
+
+        curl_exec($ch);
+        $effectiveUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+        curl_close($ch);
+
+        if (!is_string($effectiveUrl) || $effectiveUrl === '') {
+            return null;
+        }
+
+        return $effectiveUrl;
+    }
+
     public function images(): HasMany
     {
         return $this->hasMany(PropertyImage::class);
