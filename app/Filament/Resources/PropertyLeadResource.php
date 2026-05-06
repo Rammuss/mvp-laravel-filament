@@ -9,7 +9,6 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
 
 class PropertyLeadResource extends Resource
 {
@@ -55,9 +54,6 @@ class PropertyLeadResource extends Resource
     {
         return $table
             ->defaultSort('created_at', 'desc')
-            ->modifyQueryUsing(function (Builder $query): Builder {
-                return $query->where('status', 'new');
-            })
             ->columns([
                 Tables\Columns\TextColumn::make('property.title')
                     ->label('Property')
@@ -90,7 +86,8 @@ class PropertyLeadResource extends Resource
                         'new' => 'New',
                         'contacted' => 'Contacted',
                         'closed' => 'Closed',
-                    ]),
+                    ])
+                    ->default('new'),
             ])
             ->actions([
                 Tables\Actions\Action::make('advanceStatus')
