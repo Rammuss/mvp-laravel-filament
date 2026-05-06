@@ -64,7 +64,7 @@ class PropertyLeadResource extends Resource
                 Tables\Columns\TextColumn::make('email')->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(function (string $state): string {
+                    ->color(function ($state): string {
                         if ($state === 'new') {
                             return 'danger';
                         }
@@ -90,24 +90,28 @@ class PropertyLeadResource extends Resource
                     ->default('new'),
             ])
             ->actions([
-                Tables\Actions\Action::make('advanceStatus')
-                    ->label(function (PropertyLead $record): string {
-                        if ($record->status === 'new') {
-                            return 'Mark Contacted';
-                        }
-
-                        return 'Mark Closed';
-                    })
-                    ->icon('heroicon-o-arrow-right')
+                Tables\Actions\Action::make('markContacted')
+                    ->label('Mark Contacted')
+                    ->icon('heroicon-o-phone-outgoing')
                     ->requiresConfirmation()
-                    ->visible(function (PropertyLead $record): bool {
-                        return $record->status !== 'closed';
+                    ->visible(function ($record): bool {
+                        return $record->status === 'new';
                     })
-                    ->action(function (PropertyLead $record): void {
-                        $nextStatus = $record->status === 'new' ? 'contacted' : 'closed';
-
+                    ->action(function ($record): void {
                         $record->update([
-                            'status' => $nextStatus,
+                            'status' => 'contacted',
+                        ]);
+                    }),
+                Tables\Actions\Action::make('markClosed')
+                    ->label('Mark Closed')
+                    ->icon('heroicon-o-check-circle')
+                    ->requiresConfirmation()
+                    ->visible(function ($record): bool {
+                        return $record->status === 'contacted';
+                    })
+                    ->action(function ($record): void {
+                        $record->update([
+                            'status' => 'closed',
                         ]);
                     }),
                 Tables\Actions\EditAction::make(),
