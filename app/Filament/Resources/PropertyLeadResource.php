@@ -63,18 +63,6 @@ class PropertyLeadResource extends Resource
                 Tables\Columns\TextColumn::make('phone')->searchable(),
                 Tables\Columns\TextColumn::make('email')->searchable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->badge()
-                    ->color(function ($state): string {
-                        if ($state === 'new') {
-                            return 'danger';
-                        }
-
-                        if ($state === 'contacted') {
-                            return 'warning';
-                        }
-
-                        return 'success';
-                    })
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
@@ -86,34 +74,9 @@ class PropertyLeadResource extends Resource
                         'new' => 'New',
                         'contacted' => 'Contacted',
                         'closed' => 'Closed',
-                    ])
-                    ->default('new'),
+                    ]),
             ])
             ->actions([
-                Tables\Actions\Action::make('markContacted')
-                    ->label('Mark Contacted')
-                    ->icon('heroicon-o-phone-outgoing')
-                    ->requiresConfirmation()
-                    ->visible(function ($record): bool {
-                        return $record->status === 'new';
-                    })
-                    ->action(function ($record): void {
-                        $record->update([
-                            'status' => 'contacted',
-                        ]);
-                    }),
-                Tables\Actions\Action::make('markClosed')
-                    ->label('Mark Closed')
-                    ->icon('heroicon-o-check-circle')
-                    ->requiresConfirmation()
-                    ->visible(function ($record): bool {
-                        return $record->status === 'contacted';
-                    })
-                    ->action(function ($record): void {
-                        $record->update([
-                            'status' => 'closed',
-                        ]);
-                    }),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
