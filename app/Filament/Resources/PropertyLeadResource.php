@@ -9,6 +9,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Illuminate\Database\Eloquent\Builder;
 
 class PropertyLeadResource extends Resource
 {
@@ -53,6 +54,10 @@ class PropertyLeadResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
+            ->modifyQueryUsing(function (Builder $query): Builder {
+                return $query->where('status', 'new');
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('property.title')
                     ->label('Property')
@@ -62,11 +67,52 @@ class PropertyLeadResource extends Resource
                 Tables\Columns\TextColumn::make('phone')->searchable(),
                 Tables\Columns\TextColumn::make('email')->searchable(),
                 Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(function (string $state): string {
+                        if ($state === 'new') {
+                            return 'danger';
+                        }
+
+                        if ($state === 'contacted') {
+                            return 'warning';
+                        }
+
+                        return 'success';
+                    })
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
             ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Estado')
+                    ->options([
+                        'new' => 'New',
+                        'contacted' => 'Contacted',
+                        'closed' => 'Closed',
+                    ]),
+            ])
             ->actions([
+                Tables\Actions\Action::make('advanceStatus')
+                    ->label(function (PropertyLead $record): string {
+                        if ($record->status === 'new') {
+                            return 'Mark Contacted';
+                        }
+
+                        return 'Mark Closed';
+                    })
+                    ->icon('heroicon-o-arrow-right')
+                    ->requiresConfirmation()
+                    ->visible(function (PropertyLead $record): bool {
+                        return $record->status !== 'closed';
+                    })
+                    ->action(function (PropertyLead $record): void {
+                        $nextStatus = $record->status === 'new' ? 'contacted' : 'closed';
+
+                        $record->update([
+                            'status' => $nextStatus,
+                        ]);
+                    }),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
